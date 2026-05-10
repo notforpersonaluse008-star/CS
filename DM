@@ -1,0 +1,24 @@
+clc;
+clear all;
+% Inputs
+A = input('Enter amplitude of input signal: ');
+fm = input('Enter message frequency (Hz): ');
+fs = input('Enter sampling frequency (Hz): ');
+% Sampling interval
+Ts = 1/fs;
+% Step size
+delta = 2*pi*A*fm*Ts;
+% Signal power
+Pmax = (A^2)/2;
+% Quantization noise
+sigma_q = (delta^2)/3;
+% Bandwidth
+W = fm;
+% Noise power
+N = W * Ts * sigma_q;
+% SNR
+SNR = Pmax / N;
+% SNR in dB
+SNR_dB = 10*log10(SNR);
+% Output
+fprintf('SNR for Delta Modulation = %.2f dB\n', SNR_dB);
