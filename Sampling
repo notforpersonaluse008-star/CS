@@ -1,0 +1,51 @@
+clc;
+clear all;
+A=input('Enter amplitude=');
+fm=input('enter the frequency of message signal fm=');
+fu=input('enter the sampling frequency fu<2fm is fu=');
+fp=input('enter the sampling frequency fp>2fm is fp=');
+t=0:0.001:1;
+x=A*sin(2*pi*fm*t);
+subplot(3,2,1);
+plot(t,x)
+grid on;
+xlabel('time ');
+ylabel('amplitude ');
+title('sine wave');
+tu=0:1/fu:1;
+xu=A*sin(2*pi*fm*tu);
+subplot(3,2,2);
+stem(tu,xu);
+grid on;
+xlabel('time ');
+ylabel('amplitude ');
+title('undersampling');
+tp=0:1/fp:1;
+xp=A*sin(2*pi*fm*tp);
+subplot(3,2,3);
+stem(tp,xp);
+grid on;
+xlabel('time');
+ylabel('amplitude');
+title('proper sampling');
+n2=0:0.001:1;
+r2=interp1(tu,xu,n2,'linear');
+subplot(3,2,4);
+plot(n2,r2);
+grid on;
+xlabel('time');
+ylabel('amplitude ');
+title('reconstructed undersampled');
+n3=0:0.001:1;
+r3=interp1(tp,xp,n3,'linear');
+subplot(3,2,5);
+plot(n3,r3);
+grid on;
+xlabel('time ');
+ylabel('amplitude');
+title('reconstructed properly sampled');
+%%%%% OUTPUT %%%%%%
+%Enter amplitude=1
+%enter the frequency of message signal fm=5
+%enter the sampling frequency fu<2fm is fu=6
+%enter the sampling frequency fp>2fm is fp=20
