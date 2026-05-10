@@ -1,0 +1,51 @@
+clc;
+clear all;
+close all;
+% ---------------- INPUT PARAMETERS ----------------
+fs = 8000; % Sampling frequency
+t = 0:1/fs:0.1; % Time vector
+f = 100; % Signal frequency
+n = 4; % Bit depth (CHANGE: 2, 3, 4, 8 to compare)
+L = 2^n; % Number of quantization levels
+% ---------------- ORIGINAL SIGNAL ----------------
+x = sin(2*pi*f*t);
+% ---------------- QUANTIZATION ----------------
+% Scale signal from [-1,1] to [0, L-1]
+xq = round((x + 1) * (L-1) / 2);
+% Reconstruct back to [-1,1]
+xr = (xq * 2 / (L-1)) - 1;
+% ---------------- NOISE CALCULATION ----------------
+noise = x - xr;
+signal_power = mean(x.^2);
+noise_power = mean(noise.^2);
+SNR_simulated = 10 * log10(signal_power / noise_power);
+% ---------------- THEORETICAL SNR ----------------
+SNR_theoretical = 6.02*n + 1.76;
+% ---------------- DISPLAY RESULTS ----------------
+fprintf('Bit depth (n) = %d\n', n);
+fprintf('Simulated SNR = %.2f dB\n', SNR_simulated);
+fprintf('Theoretical SNR = %.2f dB\n', SNR_theoretical);
+% ---------------- PLOTS ----------------
+figure;
+subplot(3,1,1);
+plot(t, x);
+title('Original Signal');
+xlabel('Time');
+ylabel('Amplitude');
+grid on;
+subplot(3,1,2);
+stairs(t, xr);
+title('Quantized / Reconstructed Signal');
+xlabel('Time');
+ylabel('Amplitude');
+grid on;
+subplot(3,1,3);
+plot(t, noise);
+title('Quantization Noise');
+xlabel('Time');
+ylabel('Amplitude');
+grid on;
+OUTPUT:-
+Bit depth (n) = 4
+Simulated SNR = 25.77 dB
+Theoretical SNR = 25.84 dB
